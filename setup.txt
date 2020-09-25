@@ -17,3 +17,10 @@ The three main file/directory dependencies are:
   we do not have to log in every single time, and in fact, *all* browser session
   information is stored.
 
+Selenium does not run in headless mode; it instead runs on Xvfb frame buffer, 
+managed by the systemd script 'vncd.service'. You should install and start the
+service before the script is run; the frame buffer runs as DISPLAY=:1.
+
+When you run 'ps aux | grep X', it should have a line like:
+    /usr/bin/Xtigervnc :1 -desktop insta-screenshot-service:1 (root) -auth /root/.Xauthority -geometry 1920x1080 -depth 24 -rfbwait 30000 -rfbauth /root/.vnc/passwd -rfbport 5900 -pn -SecurityTypes TLSVnc
+
