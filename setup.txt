@@ -1,0 +1,19 @@
+There is a Docker file, but Selenium + app mode for whatever reason doesn't like 
+running inside Docker, so to set up the environment, you should just do what the
+Dockerfile says on a new server, just manually.
+
+The three main file/directory dependencies are:
+  - 'chromedriver' binary
+  - 'google-chrome-stable_current_amd64.deb'
+  - 'selenium' directory.
+
+  The chromedriver is required for Selenium to run and was downloaded from
+  <https://chromedriver.storage.googleapis.com/index.html?path=85.0.4183.87/>.
+
+  The deb file is used to install Google Chrome, as the Dockerfile instructs.
+  It is downloaded from the official Google Chrome download location.
+
+  The 'selenium' directory is where the session information is stored so that
+  we do not have to log in every single time, and in fact, *all* browser session
+  information is stored.
+
