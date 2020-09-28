@@ -1,10 +1,14 @@
 import os
+from datetime import datetime
+from pathlib import Path
 from flask import Flask, Response, request
 from flask_restful import Resource, Api
 from waitress import serve
 import base64
 
 from snapshotter import Snapshotter
+
+rootdir = os.environ.get('ROOTDIR') or './post-snapshots'
 
 app = Flask(__name__)
 api = Api(app)
@@ -15,19 +19,19 @@ snap = Snapshotter()
 @app.route('/api/take-snapshot/<urlId>', methods=['POST'])
 def takeSnapshots(urlId):
     print('POST /api/take-snapshot/<urlId>: got urlId=' + urlId)
-    filename = '/tmp/' + urlId + '.png'
-    snap.snapshot_post(urlId, filename)
 
-    # read back the file as base64
-    with open(filename, 'rb') as file:
-        data = base64.b64encode(file.read())
+    now = datetime.now()
+    subdir = now.strftime("%Y%m")
+    date_time = now.strftime("%Y%m%dT%H%M%S")
 
-    try:
-        os.remove(filename)
-    except OSError as e:
-        print ("Error: %s - %s." % (e.filename, e.strerror))
+    filename = urlId + '-' + date_time + '.png'
+    uri = subdir + '/' + filename
+    filepath = rootdir + '/' + uri
 
-    return { 'data': data }
+    Path(rootdir + '/' + subdir).mkdir(parents=True, exist_ok=True)
+    snap.snapshot_post(urlId, filepath)
+
+    return { 'uri': uri }
 
 if __name__ == '__main__':
     port = os.environ.get('PORT') or 8080
