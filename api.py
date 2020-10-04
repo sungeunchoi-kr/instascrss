@@ -33,6 +33,14 @@ def takeSnapshots(urlId):
 
     return { 'uri': uri }
 
+@app.route('/api/shortcode/<shortcode>', methods=['POST'])
+def convertShortcode(shortcode):
+    print('POST /api/shortcode/<shortcode>: got shortcode=' + shortcode)
+
+    media_id = snap.convert_shortcode(shortcode)
+
+    return { 'media_id': media_id }
+
 if __name__ == '__main__':
     port = os.environ.get('PORT') or 8080
     serve(app, host='0.0.0.0', port=port)

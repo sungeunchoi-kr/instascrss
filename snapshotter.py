@@ -1,6 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
+import re
+
 class Snapshotter:
     driver = None
 
@@ -38,5 +40,23 @@ class Snapshotter:
         print('snapshot_post: taking screenshot.')
         self.driver.save_screenshot(destinationPath)
 
+    def convert_shortcode(self, shortcode):
+        url = 'https://www.instagram.com/p/' + shortcode
+        self.driver.get(url)
+        print('convert_shortcode: got page ' + url + '.')
+
+        print(self.driver.page_source)
+        media_id = resolve_post_url_to_media_id(self.driver.page_source)
+        print('convert_shortcode: found media_id=' + str(media_id) + '.')
+        return media_id
+
     def save_snapshot(self):
         return
+
+def resolve_post_url_to_media_id(pageHtml):
+    try:
+        match = re.search('content="instagram://media\?id=(.+?)"', pageHtml).group(1)
+        return match
+    except AttributeError:
+        return None
+

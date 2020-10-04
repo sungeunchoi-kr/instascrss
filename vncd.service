@@ -1,0 +1,16 @@
+[Unit]
+Description=VNC Server Daemon
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+#Restart=always
+RestartSec=10
+WorkingDirectory=/root
+User=root
+ExecStart=/usr/bin/vncserver :1 -geometry 1920x1080 -SecurityTypes=TLSVnc -rfbport 5900 -fg
+ExecStop=/usr/bin/vncserver -kill :1
+
+[Install]
+WantedBy=multi-user.target
