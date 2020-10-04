@@ -1,0 +1,16 @@
+[Unit]
+Description=Instagram Screenshot Service (Posts, Mobile)
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Environment="ROOTDIR=/home/j/opt/instascrss/data"
+Environment="DISPLAY=:1"
+Restart=no
+WorkingDirectory=/home/j/opt/instascrss
+User=j
+ExecStart=/usr/bin/python3 -u /home/j/opt/instascrss/api.py
+
+[Install]
+WantedBy=multi-user.target

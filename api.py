@@ -10,7 +10,9 @@ from snapshotter import Snapshotter
 
 rootdir = os.environ.get('ROOTDIR') or './post-snapshots'
 
-app = Flask(__name__)
+app = Flask(__name__,
+            static_url_path='/snapshots',
+            static_folder='data')
 api = Api(app)
 
 snap = Snapshotter()
