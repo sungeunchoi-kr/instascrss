@@ -42,7 +42,7 @@ class Snapshotter:
         # this amount of sleep is necessary for the scroll bars on the right to
         # disappear but for the "like" button notification wordcloud to not 
         # show up yet.
-        time.sleep(0.250)
+        time.sleep(0.200)
         print('snapshot_post: taking screenshot.')
         self.driver.save_screenshot(destinationPath)
 
