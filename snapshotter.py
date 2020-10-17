@@ -1,7 +1,9 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
+from PIL import Image
 import re
+import time
 
 class Snapshotter:
     driver = None
@@ -37,8 +39,19 @@ class Snapshotter:
         self.driver.get(url)
         print('snapshot_post: got page ' + url + '.')
 
+        # this amount of sleep is necessary for the scroll bars on the right to
+        # disappear but for the "like" button notification wordcloud to not 
+        # show up yet.
+        time.sleep(0.250)
         print('snapshot_post: taking screenshot.')
         self.driver.save_screenshot(destinationPath)
+
+        reduce_factor = 3
+        img = Image.open(destinationPath)
+        reduced_dimension = (img.size[0]//reduce_factor, img.size[1]//reduce_factor)
+        print('snapshot_post: reduced_dimension=' + str(reduced_dimension))
+        img2 = img.resize(reduced_dimension, Image.ANTIALIAS)
+        img2.save(destinationPath)
 
     def convert_shortcode(self, shortcode):
         url = 'https://www.instagram.com/p/' + shortcode
