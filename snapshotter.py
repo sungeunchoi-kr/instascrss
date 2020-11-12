@@ -15,7 +15,7 @@ class Snapshotter:
         chrome_options.add_argument("--remote-debugging-port=9222")
         chrome_options.add_argument("user-data-dir=selenium")
         mobile_emulation = {
-            "deviceMetrics": { "width": 414, "height": 736, "pixelRatio": 3.0 },
+            "deviceMetrics": { "width": 414, "height": 788, "pixelRatio": 3.0 },
             "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 11_0 like Mac OS X) AppleWebKit/604.1.34 (KHTML, like Gecko) Version/11.0 Mobile/15A5341f Safari/604.1"
         }
         chrome_options.add_experimental_option("mobileEmulation", mobile_emulation)

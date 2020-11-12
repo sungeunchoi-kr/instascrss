@@ -5,8 +5,9 @@ StartLimitIntervalSec=0
 
 [Service]
 Type=simple
-Environment="ROOTDIR=/home/j/opt/instascrss/data"
+Environment="ROOTDIR=/home/j/opt/instascrss/data/snapshots"
 Environment="DISPLAY=:1"
+Environment="PORT=18080"
 Restart=no
 WorkingDirectory=/home/j/opt/instascrss
 User=j
