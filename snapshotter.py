@@ -4,9 +4,11 @@ from selenium.webdriver.chrome.options import Options
 from PIL import Image
 import re
 import time
+import bannerremover
 
 class Snapshotter:
     driver = None
+    last_run_time = 0
 
     def __init__(self):
         ### options
@@ -38,6 +40,20 @@ class Snapshotter:
         url = 'https://www.instagram.com/p/' + urlId
         self.driver.get(url)
         print('snapshot_post: got page ' + url + '.')
+
+        # if it has been an hour since the previous snapshot, then run
+        # the bannerremover.
+        print('last_run_time={}'.format(self.last_run_time))
+        if time.time() - self.last_run_time > 60*60:
+            print('running bannerremover because it has been more ' +
+                  'than an hour since the last snapshot.')
+            bannerremover.run()
+            self.last_run_time = time.time()
+            print('bannerremover returned.')
+
+            # get the page again because the timing below matters.
+            self.driver.get(url)
+            print('snapshot_post: got page ' + url + '.')
 
         # this amount of sleep is necessary for the scroll bars on the right to
         # disappear but for the "like" button notification wordcloud to not 
