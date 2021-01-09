@@ -66,8 +66,11 @@ class Snapshotter:
         img = Image.open(destinationPath)
         reduced_dimension = (img.size[0]//reduce_factor, img.size[1]//reduce_factor)
         print('snapshot_post: reduced_dimension=' + str(reduced_dimension))
-        img2 = img.resize(reduced_dimension, Image.ANTIALIAS)
-        img2.save(destinationPath)
+        img_reduced = img.resize(reduced_dimension, Image.ANTIALIAS)
+        img_reduced.save(destinationPath)
+
+        img_jpg = img_reduced.convert("RGB")
+        img_jpg.save(destinationPath + '.jpg')
 
     def convert_shortcode(self, shortcode):
         url = 'https://www.instagram.com/p/' + shortcode
