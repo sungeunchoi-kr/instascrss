@@ -1,4 +1,5 @@
 import os
+import uuid
 from datetime import datetime
 from pathlib import Path
 from flask import Flask, Response, request
@@ -42,6 +43,29 @@ def convertShortcode(shortcode):
     media_id = snap.convert_shortcode(shortcode)
 
     return { 'media_id': media_id }
+
+# A poor-man's image store. Receive image by base64; it will be saved
+# onto the disk and the route will return a uri which you can use to
+# access the image.
+@app.route('/api/images', methods=['POST'])
+def saveImage():
+    data = request.get_data()
+    print('POST /api/images: started. data size = {}'.format(len(data)))
+
+    now = datetime.now()
+    subdir = now.strftime("%Y%m")
+    filename = str(uuid.uuid4())
+    uri = subdir + '/' + filename
+
+    try:
+        filepath = rootdir + '/' + uri
+        Path(rootdir + '/' + subdir).mkdir(parents=True, exist_ok=True)
+        with open(filepath, 'wb') as fh:
+            fh.write(base64.decodebytes(data))
+        return { 'uri': uri }
+    except Exception as e:
+        print(e)
+        return { 'error': repr(e) }
 
 if __name__ == '__main__':
     port = os.environ.get('PORT') or 8080
