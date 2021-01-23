@@ -5,6 +5,7 @@ import pytesseract
 from pytesseract import Output
 
 def run():
+    print('Started bannerremover.')
     img = scrot.grab()
     data = pytesseract.image_to_data(img, output_type=Output.DICT)
     

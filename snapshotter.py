@@ -70,7 +70,7 @@ class Snapshotter:
         img_reduced.save(destinationPath)
 
         img_jpg = img_reduced.convert("RGB")
-        img_jpg.save(destinationPath + '.jpg')
+        img_jpg.save(destinationPath + '.jpg', quality=36)
 
     def convert_shortcode(self, shortcode):
         url = 'https://www.instagram.com/p/' + shortcode
